@@ -159,49 +159,48 @@ class _TareoFormState extends State<TareoForm> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final user = authProvider.session?.user;
 
-    // 🔍 Obtener IDs desde nombres
+    // Obtener IDs desde nombres
     final trabajadorObj = trabajadorProvider.trabajadores.firstWhere((t) => "${t.nombres} ${t.apellidos}" == trabajador);
     final areaObj = areaProvider.areas.firstWhere((a) => a.nombre == area);
     final actividadObj = actividadProvider.actividades.firstWhere((a) => a.nombre == actividad);
     final tipoObj = tipoProvider.tiposSueldo.firstWhere((t) => t.nombre == tipoSueldo);
 
+    final detalle = {
+      if (widget.tareo != null) 
+        "id": widget.tareo.detalles.first.id,
+
+      if (widget.tareo != null)
+        "tareoId": widget.tareo.id,
+
+      "trabajadorId": trabajadorObj.id,
+      "areaId": areaObj.id,
+      "actividadId": actividadObj.id,
+      "tipoSueldoId": tipoObj.id,
+
+      "horaInicio": horaInicio,
+      "horaFin": horaFin,
+      "horaInicioRefrigerio": refInicio,
+      "horaFinRefrigerio": refFin,
+
+      "cantidadHoras": double.tryParse(horasCtrl.text) ?? 0,
+      "rendimientoDestajo": double.tryParse(destajoCtrl.text) ?? 0,
+      "costoPasaje": double.tryParse(pasajeCtrl.text) ?? 0,
+      "costoAlmuerzo": double.tryParse(almuerzoCtrl.text) ?? 0,
+      "tarifa": double.tryParse(tarifaCtrl.text) ?? 0,
+      "costoTotal": _total(),
+      "observaciones": obsCtrl.text,
+    };
+
     final data = {
-      "id": widget.tareo?.id ?? 0,
+      if (widget.tareo != null)
+        "id": widget.tareo.id,
+
       "fecha": now.toIso8601String(),
       "supervisorId": user?.id,
-      "supervisorNombre": user?.usuario,
       "estado": "Pendiente",
       "totalCosto": _total(),
-      "dia": now.day,
-      "mes": now.month,
-      "anio": now.year,
-      "detalles": [
-        {
-          "id": null,
-          "tareoId": widget.tareo?.id ?? 0,
-          "trabajadorId": trabajadorObj.id,
-          "trabajadorNombre": trabajador,
-          "areaId": areaObj.id,
-          "areaNombre": area,
-          "actividadId": actividadObj.id,
-          "actividadNombre": actividad,
-          "tipoSueldoId": tipoObj.id,
-          "tipoSueldoNombre": tipoSueldo,
-          "horaInicio": horaInicio,
-          "horaFin": horaFin,
-          "horaInicioRefrigerio": refInicio,
-          "horaFinRefrigerio": refFin,
-          "cantidadHoras": double.tryParse(horasCtrl.text) ?? 0,
-          "rendimientoDestajo": double.tryParse(destajoCtrl.text) ?? 0,
-          "costoPasaje": double.tryParse(pasajeCtrl.text) ?? 0,
-          "costoAlmuerzo": double.tryParse(almuerzoCtrl.text) ?? 0,
-          "tarifa": double.tryParse(tarifaCtrl.text) ?? 0,
-          "costoTotal": _total(),
-          "observaciones": obsCtrl.text.isEmpty
-              ? ""
-              : obsCtrl.text,
-        }
-      ]
+
+      "detalles": [detalle],
     };
 
     final provider = Provider.of<TareoProvider>(context, listen: false);
