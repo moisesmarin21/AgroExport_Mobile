@@ -162,7 +162,7 @@ class _TareoScreenState extends State<TareoScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 4),
                                           decoration: BoxDecoration(
-                                            color: tareo.estado == "Activo"
+                                            color: tareo.estado == "Pagado"
                                                 ? Colors.green.withOpacity(0.15)
                                                 : Colors.red.withOpacity(0.15),
                                             borderRadius: BorderRadius.circular(20),
@@ -170,7 +170,7 @@ class _TareoScreenState extends State<TareoScreen> {
                                           child: Text(
                                             tareo.estado,
                                             style: TextStyle(
-                                              color: tareo.estado == "Activo"
+                                              color: tareo.estado == "Pagado"
                                                   ? Colors.green
                                                   : Colors.red,
                                               fontWeight: FontWeight.w600,
